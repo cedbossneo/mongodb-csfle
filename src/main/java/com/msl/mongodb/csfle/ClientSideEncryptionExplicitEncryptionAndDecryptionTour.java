@@ -35,8 +35,8 @@ public class ClientSideEncryptionExplicitEncryptionAndDecryptionTour {
      */
     public static void main(final String[] args) {
     	
-    	ConnectionString connectionString = new ConnectionString("mongodb+srv://m2m:XBLA92iGDv7NMqCq@bau-cluster-zjisk.mongodb.net/test?retryWrites=true&w=majority");
-
+    	String conn = args[0];
+    	ConnectionString connectionString = new ConnectionString(conn);
 
         // This would have to be the same master key as was used to create the encryption key
         final byte[] localMasterKey = new byte[96];
