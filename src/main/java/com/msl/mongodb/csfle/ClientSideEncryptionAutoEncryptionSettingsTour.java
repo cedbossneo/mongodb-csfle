@@ -35,6 +35,11 @@ public class ClientSideEncryptionAutoEncryptionSettingsTour {
     	
     	String conn = args[0];
     	ConnectionString connectionString = new ConnectionString(conn);
+    	
+    	System.out.println("Connection:" + conn);
+    	
+    	String dataBaseName = "CSFLE-TEST";
+    	String collectionName= "CSFLE-AUTO";
 
         // This would have to be the same master key as was used to create the encryption key
         final byte[] localMasterKey = new byte[96];
@@ -91,7 +96,7 @@ public class ClientSideEncryptionAutoEncryptionSettingsTour {
                 .build();
 
         MongoClient mongoClient = MongoClients.create(clientSettings);
-        MongoCollection<Document> collection = mongoClient.getDatabase("test").getCollection("coll");
+        MongoCollection<Document> collection = mongoClient.getDatabase(dataBaseName).getCollection(collectionName);
         collection.drop(); // Clear old data
 
         collection.insertOne(new Document("encryptedField", "123456789"));

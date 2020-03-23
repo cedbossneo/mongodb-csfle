@@ -35,8 +35,17 @@ public class ClientSideEncryptionExplicitEncryptionAndDecryptionTour {
      */
     public static void main(final String[] args) {
     	
+    	
     	String conn = args[0];
+    	
+    	System.out.println("Connection:" + conn);
+    	
+    	String dataBaseName = "CSFLE-TEST";
+    	String collectionName= "CSFLE-EXPLICIT";
+
     	ConnectionString connectionString = new ConnectionString(conn);
+    	
+
 
         // This would have to be the same master key as was used to create the encryption key
         final byte[] localMasterKey = new byte[96];
@@ -65,7 +74,7 @@ public class ClientSideEncryptionExplicitEncryptionAndDecryptionTour {
                 new IndexOptions().unique(true)
                         .partialFilterExpression(Filters.exists("keyAltNames")));
 
-        MongoCollection<Document> collection = mongoClient.getDatabase("test").getCollection("coll");
+        MongoCollection<Document> collection = mongoClient.getDatabase(dataBaseName).getCollection(collectionName);
         collection.drop(); // Clear old data
 
         // Create the ClientEncryption instance
@@ -82,7 +91,7 @@ public class ClientSideEncryptionExplicitEncryptionAndDecryptionTour {
         BsonBinary dataKeyId = clientEncryption.createDataKey("local", new DataKeyOptions());
 
         // Explicitly encrypt a field
-        BsonBinary encryptedFieldValue = clientEncryption.encrypt(new BsonString("123456789"),
+        BsonBinary encryptedFieldValue = clientEncryption.encrypt(new BsonString("42342"),
                 new EncryptOptions("AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic").keyId(dataKeyId));
 
         collection.insertOne(new Document("encryptedField", encryptedFieldValue));

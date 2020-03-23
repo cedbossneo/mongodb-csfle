@@ -18,6 +18,11 @@ public class ClientSideEncryptionSimpleTour {
     public static void main(final String[] args) {
     	
     	String conn = args[0];
+    	System.out.println("Connection:" + conn);
+    	
+    	String dataBaseName = "CSFLE-TEST";
+    	String collectionName= "CSFLE-AUTO-SIMPLE";
+
     	ConnectionString connectionString = new ConnectionString(conn);
     	
         // This would have to be the same master key as was used to create the encryption key
@@ -32,21 +37,21 @@ public class ClientSideEncryptionSimpleTour {
 
         String keyVaultNamespace = "admin.datakeys";
 
-//        AutoEncryptionSettings autoEncryptionSettings = AutoEncryptionSettings.builder()
-//                .keyVaultNamespace(keyVaultNamespace)
-//                .kmsProviders(kmsProviders)
-//                .build();
+        AutoEncryptionSettings autoEncryptionSettings = AutoEncryptionSettings.builder()
+                .keyVaultNamespace(keyVaultNamespace)
+                .kmsProviders(kmsProviders)
+                .build();
 
         MongoClientSettings clientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
-//                .autoEncryptionSettings(autoEncryptionSettings)
+                .autoEncryptionSettings(autoEncryptionSettings)
                 .build();
 
         MongoClient mongoClient = MongoClients.create(clientSettings);
-        MongoCollection<Document> collection = mongoClient.getDatabase("test").getCollection("coll");
+        MongoCollection<Document> collection = mongoClient.getDatabase(dataBaseName).getCollection(collectionName);
         collection.drop(); // Clear old data
 
-        collection.insertOne(new Document("encryptedField", "123456789"));
+        collection.insertOne(new Document("encryptedField", "12313"));
 
         System.out.println(collection.find().first().toJson());
     }
