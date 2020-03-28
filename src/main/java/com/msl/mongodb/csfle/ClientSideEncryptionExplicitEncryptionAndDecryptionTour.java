@@ -63,7 +63,8 @@ public class ClientSideEncryptionExplicitEncryptionAndDecryptionTour {
         MongoClient mongoClient = MongoClients.create(clientSettings);
 
         // Set up the key vault for this example
-        MongoNamespace keyVaultNamespace = new MongoNamespace("encryption.testKeyVault");
+        String keyVaultNamespaceString = "encryption.__keyVault";
+        MongoNamespace keyVaultNamespace = new MongoNamespace(keyVaultNamespaceString);
 
         MongoCollection<Document> keyVaultCollection = mongoClient.getDatabase(keyVaultNamespace.getDatabaseName())
                 .getCollection(keyVaultNamespace.getCollectionName());
